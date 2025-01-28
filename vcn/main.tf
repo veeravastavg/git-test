@@ -43,33 +43,3 @@ resource "oci_core_subnet" "my_subnet" {
   display_name        = var.subnet_name
   prohibit_public_ip_on_vnic = false # Set to true to disable public IPs
 }
-
-# Security List
-resource "oci_core_security_list" "my_security_list" {
-  compartment_id = var.compartment_id
-  vcn_id         = oci_core_vcn.my_vcn.id
-  display_name   = "My_Security_List"
-
-  # Ingress rule: Allow SSH (Port 22)
-  ingress_security_rules {
-    protocol = "6" # TCP
-    source   = "0.0.0.0/0"
-
-    tcp_options {
-      min = 22
-      max = 22
-    }
-  }
-
-  # Egress rule: Allow all traffic
-  egress_security_rules {
-    protocol = "all"
-    destination = "0.0.0.0/0"
-  }
-}
-
-# Assign the Security List to the Subnet
-resource "oci_core_subnet_security_list_association" "my_subnet_sl_association" {
-  subnet_id       = oci_core_subnet.my_subnet.id
-  security_list_id = oci_core_security_list.my_security_list.id
-}
