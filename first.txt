@@ -1,2 +1,2 @@
 This is main file.
-This is sec line
+This is sec line.
